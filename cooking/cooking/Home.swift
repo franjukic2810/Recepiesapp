@@ -10,6 +10,7 @@ import SwiftUI
 
 struct Home: View {
      @Environment(\.presentationMode) var mode: Binding<PresentationMode>
+    @State var recepti = receptData
     var body: some View {
         NavigationView {
             ScrollView {
@@ -40,18 +41,18 @@ struct Home: View {
                 .padding()
                 
                 VStack(spacing: 25) {
-                    ForEach(1..<15){ item in
-                        NavigationLink(destination: Text("hi")) {
+                    ForEach(receptData){ item in
+                        NavigationLink(destination: ReceptView(recepti: item)) {
                             VStack(alignment: .leading) {
-                                Text("Brzi kolač")
+                                Text(item.title)
                                     .font(.title)
                                     .foregroundColor(Color.white)
-                                Text("30 minuta")
+                                Text(item.text)
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                             }
                             .frame(width: 330, height: 150)
-                            .background(LinearGradient(gradient: Gradient(colors: [Color("accent"), .blue]), startPoint: .top, endPoint: .bottom))
+                            .background(Color(item.color))
                             .cornerRadius(20)
                             .shadow(radius: 10)
                         }
@@ -70,6 +71,22 @@ struct Home: View {
 
     }
 }
+
+struct Recepti: Identifiable {
+    var id = UUID()
+    var title: String
+    var text: String
+    var color: UIColor
+}
+
+// postavljamo informacije o varijabli(jer ćemo ih koristiti više puta)
+let receptData = [
+    Recepti(title: "Tiramisu",text: "1 sat",color: #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)),
+    Recepti(title: "Pita od sira",text: "2 sata",color: #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)),
+    Recepti(title: "Boem kocke",text: "12 sati",color: #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)),
+    Recepti(title: "Kinder kolač",text: "5 sati",color: #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1))
+]
+
 
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
